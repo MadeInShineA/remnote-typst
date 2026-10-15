@@ -23,16 +23,26 @@ $typst.setRendererInitOptions({
 		'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer@0.7.0/pkg/typst_ts_renderer_bg.wasm',
 });
 
+// Define the page style
+const PAGE_PREAMBLE =
+	'#set page(width: auto, height: auto, margin: 0pt)\n';
+
+// Compile the Typst source to an SVG string
 async function compileTypstToSvg(
 	source: string
 ): Promise<string> {
-	return $typst.svg({ mainContent: source });
+	return $typst.svg({
+		mainContent: PAGE_PREAMBLE + source,
+	});
 }
 
 export const TypstRenderWidget = () => {
+	// The rendered SVG markup
 	const [svg, setSvg] = useState('');
+	// The compilation error message, if any
 	const [err, setErr] = useState('');
 
+	// Read the Typst code from the rem's own text
 	const source = useTracker(async (rp) => {
 		const context = await rp.widget.getWidgetContext();
 
@@ -43,6 +53,7 @@ export const TypstRenderWidget = () => {
 		return rp.richText.toString(await rem.text);
 	});
 
+	// Recompile 300ms after the code stops changing
 	useEffect(() => {
 		if (!source?.trim()) {
 			setSvg('');
@@ -61,9 +72,21 @@ export const TypstRenderWidget = () => {
 		return () => clearTimeout(t);
 	}, [source]);
 
+	// Empty code block
+	// Prompt the user to type
+	if (!source) {
+		return (
+			<div className="typst-hint">
+				Type Typst code in this code block.
+			</div>
+		);
+	}
+	// Compilation failed
+	// Show the error instead of the render
 	if (err) {
 		return <div className="typst-error">{err}</div>;
 	}
+	// Render the SVG
 	return (
 		<div
 			className="typst-output"

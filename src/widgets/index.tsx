@@ -6,11 +6,14 @@ import {
 import '../style.css';
 import '../index.css'; // import <widget-name>.css
 
+const TYPST_POWERUP = 'typst';
+const CODE_POWERUP = 'cd';
+
 async function onActivate(plugin: ReactRNPlugin) {
 	// Register the typst Power-up
 	await plugin.app.registerPowerup(
 		'typst',
-		'typst',
+		TYPST_POWERUP,
 		'Render Typst in this note',
 		{ slots: [] }
 	);
@@ -21,7 +24,7 @@ async function onActivate(plugin: ReactRNPlugin) {
 		WidgetLocation.UnderRemEditor,
 		{
 			dimensions: { height: 'auto', width: '100%' },
-			powerupFilter: 'typst',
+			powerupFilter: TYPST_POWERUP,
 		}
 	);
 
@@ -30,13 +33,17 @@ async function onActivate(plugin: ReactRNPlugin) {
 		id: 'toggle-typst',
 		name: 'Toggle Typst on this Rem',
 		action: async () => {
+			// Get the focused element
 			const rem = await plugin.focus.getFocusedRem();
-			if (rem) {
-				if (await rem.hasPowerup?.('typst')) {
-					await rem.removePowerup?.('typst');
-				} else {
-					await rem.addPowerup?.('typst');
-				}
+			if (!rem) return;
+
+			// Add or remove the code and typst Power-ups
+			if (await rem.hasPowerup(TYPST_POWERUP)) {
+				await rem.removePowerup(TYPST_POWERUP);
+				await rem.removePowerup(CODE_POWERUP);
+			} else {
+				await rem.addPowerup(CODE_POWERUP);
+				await rem.addPowerup(TYPST_POWERUP);
 			}
 		},
 	});
