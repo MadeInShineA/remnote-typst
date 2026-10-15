@@ -1,0 +1,21 @@
+.typst-output {
+	background-color: white !important;
+}
+
+.typst-output svg {
+	zoom: 3;
+	max-width: 100%;
+	height: auto;
+}
+
+.typst-error {
+	color: crimson;
+	font-size: 12px;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: none;
+}
