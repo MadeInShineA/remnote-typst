@@ -1,43 +1,45 @@
-import { declareIndexPlugin, type ReactRNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
+import {
+	declareIndexPlugin,
+	type ReactRNPlugin,
+	WidgetLocation,
+} from '@remnote/plugin-sdk';
 import '../style.css';
 import '../index.css'; // import <widget-name>.css
 
 async function onActivate(plugin: ReactRNPlugin) {
-  // Register settings
-  await plugin.settings.registerStringSetting({
-    id: 'name',
-    title: 'What is your Name?',
-    defaultValue: 'Bob',
-  });
+	// Register the typst Power-up
+	await plugin.app.registerPowerup(
+		'typst',
+		'typst',
+		'Render Typst in this note',
+		{ slots: [] }
+	);
 
-  await plugin.settings.registerBooleanSetting({
-    id: 'pizza',
-    title: 'Do you like pizza?',
-    defaultValue: true,
-  });
+	// Link the typst Power-up and the Widget
+	await plugin.app.registerWidget(
+		'typst_render',
+		WidgetLocation.UnderRemEditor,
+		{
+			dimensions: { height: 'auto', width: '100%' },
+			powerupFilter: 'typst',
+		}
+	);
 
-  await plugin.settings.registerNumberSetting({
-    id: 'favorite-number',
-    title: 'What is your favorite number?',
-    defaultValue: 42,
-  });
-
-  // A command that inserts text into the editor if focused.
-  await plugin.app.registerCommand({
-    id: 'editor-command',
-    name: 'Editor Command',
-    action: async () => {
-      plugin.editor.insertPlainText('Hello World!');
-    },
-  });
-
-  // Show a toast notification to the user.
-  await plugin.app.toast("I'm a toast!");
-
-  // Register a under editor widget.
-  await plugin.app.registerWidget('sample_widget', WidgetLocation.TopBar, {
-    dimensions: { height: 'auto', width: '100%' },
-  });
+	// Register the toggle typst Command
+	await plugin.app.registerCommand({
+		id: 'toggle-typst',
+		name: 'Toggle Typst on this Rem',
+		action: async () => {
+			const rem = await plugin.focus.getFocusedRem();
+			if (rem) {
+				if (await rem.hasPowerup?.('typst')) {
+					await rem.removePowerup?.('typst');
+				} else {
+					await rem.addPowerup?.('typst');
+				}
+			}
+		},
+	});
 }
 
 async function onDeactivate(_: ReactRNPlugin) {}
