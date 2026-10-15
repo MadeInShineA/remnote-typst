@@ -27,8 +27,7 @@
             tinymist
 
             vtsls
-            typescript
-            typescript-language-server
+            tailwindcss-language-server
             prettier
           ];
         };
