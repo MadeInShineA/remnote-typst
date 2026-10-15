@@ -1,0 +1,21 @@
+{
+  "author": "MadeInShineA",
+  "name": "Remnote Typst",
+  "description": "Enable the use of typst inside remnote",
+  "enableOnMobile": false,
+  "id": "MadeInShineA-q5wmj3w",
+  "manifestVersion": 1,
+  "repoUrl": "https://github.com/MadeInShineA/remnote-typst",
+  "version": {
+    "major": 0,
+    "minor": 0,
+    "patch": 1
+  },
+  "requestNative": false,
+  "requiredScopes": [
+    {
+      "type": "All",
+      "level": "Read"
+    }
+  ]
+}
