@@ -1,6 +1,6 @@
 import {
 	renderWidget,
-	useTracker,
+	useTrackerPlugin,
 } from '@remnote/plugin-sdk';
 
 import { useEffect, useState } from 'react';
@@ -43,14 +43,16 @@ export const TypstRenderWidget = () => {
 	const [err, setErr] = useState('');
 
 	// Read the Typst code from the rem's own text
-	const source = useTracker(async (rp) => {
+	const source = useTrackerPlugin(async (rp) => {
 		const context = await rp.widget.getWidgetContext();
 
 		if (!context || !('remId' in context)) return '';
 
 		const rem = await rp.rem.findOne(context.remId);
 		if (!rem) return '';
-		return rp.richText.toString(await rem.text);
+		const text = await rem.text;
+		if (!text) return '';
+		return rp.richText.toString(text);
 	});
 
 	// Recompile 300ms after the code stops changing
