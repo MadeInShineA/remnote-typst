@@ -23,8 +23,6 @@
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             nodejs
-            typst
-            tinymist
 
             vtsls
             tailwindcss-language-server
