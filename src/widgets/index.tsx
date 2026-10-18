@@ -9,14 +9,28 @@ import '../index.css'; // import <widget-name>.css
 const TYPST_POWERUP = 'typst';
 const CODE_POWERUP = 'cd';
 
+const COLLAPSE_CSS = `
+[data-rem-tags~="typst"] :is(.rn-code-node, #code-node):not(:focus-within),
+[data-rem-container-tags~="typst"] :is(.rn-code-node, #code-node):not(:focus-within) {
+	max-height: 1.5em !important;
+	overflow: hidden !important;
+}
+`;
+
 async function onActivate(plugin: ReactRNPlugin) {
-	// Register the typst Power-up
-	await plugin.app.registerPowerup(
-		'typst',
-		TYPST_POWERUP,
-		'Render Typst in this note',
-		{ slots: [] }
+	// Register the collapse CSS
+	await plugin.app.registerCSS(
+		'typst-collapse-code',
+		COLLAPSE_CSS
 	);
+
+	// Register the typst Power-up
+	await plugin.app.registerPowerup({
+		name: 'typst',
+		code: TYPST_POWERUP,
+		description: 'Render Typst in this note',
+		options: { slots: [] },
+	});
 
 	// Link the typst Power-up and the Widget
 	await plugin.app.registerWidget(
