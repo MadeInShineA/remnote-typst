@@ -16,11 +16,27 @@ const COLLAPSE_CSS = `
 }
 `;
 
+const HIDE_ANSWER_CSS = `
+.rn-queue__content--answer-hidden [data-queue-rem-container-tags~="typst"]:not(.rn-question-rem) iframe,
+.rn-queue__content--answer-hidden [data-rem-container-tags~="typst"]:not(.rn-question-rem) iframe,
+.rn-queue__content--answer-hidden [data-queue-rem-container-tags]:not(.rn-question-rem) iframe.rn-plugin-root[src*="typst_render"],
+.rn-queue__content--answer-hidden [data-queue-rem-container-tags]:not(.rn-question-rem) iframe[src*="widgetName=typst_render"],
+.rn-queue__content--answer-hidden [data-queue-rem-container-tags]:not(.rn-question-rem) iframe[src*="typst_render-sandbox"] {
+	display: none !important;
+}
+`;
+
 async function onActivate(plugin: ReactRNPlugin) {
 	// Register the collapse CSS
 	await plugin.app.registerCSS(
 		'typst-collapse-code',
 		COLLAPSE_CSS
+	);
+
+	// Register the hide-answer CSS
+	await plugin.app.registerCSS(
+		'typst-hide-answer',
+		HIDE_ANSWER_CSS
 	);
 
 	// Register the typst Power-up
