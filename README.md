@@ -5,7 +5,7 @@
 Render [Typst](https://typst.app/) inside RemNote: turn any Rem into a Typst code
 block and see the compiled SVG rendered below it, updating as you type.
 
-![Typst rendered inside a RemNote Rem](images/example.png)
+![Typst rendered inside a RemNote Rem](https://raw.githubusercontent.com/MadeInShineA/remnote-typst/main/images/example.png)
 
 *Typst rendered inside a RemNote Rem*
 
